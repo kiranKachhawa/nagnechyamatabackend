@@ -5,12 +5,21 @@ const connectDB = require("./config/db");
 
 dotenv.config();
 
-connectDB();
-
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Ensure Database is connected before handling requests in serverless functions
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        console.error("Failed to connect to DB in middleware");
+        return res.status(500).json({ message: "Database connection error" });
+    }
+});
 
 app.use("/api/contact", require("./routes/contactRoutes"));
 
