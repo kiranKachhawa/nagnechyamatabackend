@@ -16,8 +16,12 @@ app.use(async (req, res, next) => {
         await connectDB();
         next();
     } catch (error) {
-        console.error("Failed to connect to DB in middleware");
-        return res.status(500).json({ message: "Database connection error" });
+        console.error("Failed to connect to DB in middleware:", error.message);
+        return res.status(500).json({ 
+            success: false,
+            message: "Database connection error", 
+            error: error.message 
+        });
     }
 });
 
@@ -27,9 +31,19 @@ app.get("/", (req, res) => {
     res.send("Naganadham Backend is running");
 });
 
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ 
+        status: "error", 
+        message: "Internal Server Error",
+        details: err.message 
+    });
+});
+
 const PORT = process.env.PORT || 5000;
 
-if (process.env.MONGO_URL !== "production") {
+if (process.env.NODE_ENV !== "production") {
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
     });
