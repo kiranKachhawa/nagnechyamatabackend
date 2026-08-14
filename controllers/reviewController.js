@@ -57,8 +57,7 @@ exports.createReview = async (req, res) => {
             name: cleanName,
             city: cleanCity,
             rating: parsedRating,
-            message: cleanMessage,
-            status: "pending"
+            message: cleanMessage, 
         });
 
         // Set rate limit timestamp
@@ -66,7 +65,7 @@ exports.createReview = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            message: "Review submitted successfully! It will be visible after approval.",
+            message: "Review submitted successfully!",
             data: review
         });
     } catch (error) {
@@ -80,7 +79,7 @@ exports.createReview = async (req, res) => {
 // Get all approved reviews
 exports.getApprovedReviews = async (req, res) => {
     try {
-        const reviews = await Review.find({ status: "approved" }).sort({ createdAt: -1 });
+        const reviews = await Review.find().sort({ createdAt: -1 });
         res.status(200).json({
             success: true,
             count: reviews.length,

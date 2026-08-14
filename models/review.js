@@ -22,11 +22,6 @@ const reviewSchema = new mongoose.Schema(
             type: String,
             required: [true, "Message is required"],
             trim: true
-        },
-        status: {
-            type: String,
-            enum: ["pending", "approved", "rejected"],
-            default: "pending"
         }
     },
     {
