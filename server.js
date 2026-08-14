@@ -26,6 +26,7 @@ app.use(async (req, res, next) => {
 });
 
 app.use("/api/contact", require("./routes/contactRoutes"));
+app.use("/api/reviews", require("./routes/reviewRoutes"));
 
 app.get("/", (req, res) => {
     res.send("Naganadham Backend is running");
